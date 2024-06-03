@@ -14,6 +14,7 @@ module.exports = {
       const checkTableQuery = 'SHOW TABLES LIKE "users"';
       const tableExistsResult = await sails.sendNativeQuery(checkTableQuery);
       // console.log(tableExistsResult);
+
       // If the table doesn't exist, create it
       if (tableExistsResult.rows.length === 0) {
         const createTableQuery = `
@@ -34,10 +35,18 @@ module.exports = {
         email,
       ]);
       console.log(insertUserResult);
-      res.status(201).send('User created');
+      res.status(201).json({
+        success: true,
+        hasErrors: false,
+        message: 'User created',
+      });
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error creating user');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error creating user'
+      });
     }
   },
 
@@ -45,10 +54,14 @@ module.exports = {
     try {
       const getAllUsersQuery = 'SELECT * FROM users';
       const getAllUsersResult = await sails.sendNativeQuery(getAllUsersQuery);
-      res.status(200).send(getAllUsersResult.rows);
+      res.status(200).json(getAllUsersResult.rows);
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error getting users');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error getting users',
+      });
     }
   },
 
@@ -57,10 +70,14 @@ module.exports = {
       const { id } = req.params;
       const getUserQuery = 'SELECT * FROM users WHERE id = $1';
       const getUserResult = await sails.sendNativeQuery(getUserQuery, [id]);
-      res.status(200).send(getUserResult.rows);
+      res.status(200).json(getUserResult.rows);
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error getting user');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error getting user',
+      });
     }
   },
 
@@ -76,10 +93,18 @@ module.exports = {
         id
       ]);
       console.log(updateUserResult);
-      res.status(200).send('User updated');
+      res.status(200).json({
+        success: true,
+        hasErrors: false,
+        message: 'User updated',
+      });
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error updating user');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error updating user',
+      });
     }
   },
 
@@ -91,10 +116,18 @@ module.exports = {
         id,
       ]);
       console.log(deleteUserResult);
-      res.status(200).send('User deleted');
+      res.status(200).json({
+        success: true,
+        hasErrors: false,
+        message: 'User deleted',
+      });
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error deleting user');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error deleting user',
+      });
     }
   }
 };

@@ -80,10 +80,14 @@ module.exports = {
         postId,
         userId,
       ]);
-      res.status(200).send(getPostResult.rows);
+      res.status(200).json(getPostResult.rows);
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error getting post');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error getting post',
+      });
     }
   },
 
@@ -126,10 +130,18 @@ module.exports = {
         userId,
       ]);
       console.log(deletePostResult);
-      res.status(200).send('Post deleted');
+      res.status(200).json({
+        success: true,
+        hasErrors: false,
+        message: 'Post deleted',
+      });
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error deleting post');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error deleting post',
+      });
     }
   }
 };
