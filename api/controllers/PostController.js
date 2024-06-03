@@ -15,6 +15,7 @@ module.exports = {
       const checkTableQuery = `SHOW TABLES LIKE "posts"`;
       const tableExistsResult = await sails.sendNativeQuery(checkTableQuery);
       // console.log(tableExistsResult);
+
       // If the table doesn't exist, create it
       if (tableExistsResult.rows.length === 0) {
         const createTableQuery = `
@@ -37,10 +38,18 @@ module.exports = {
         userId,
       ]);
       console.log(insertPostResult);
-      res.status(201).send('Post created');
+      res.status(201).json({
+        success: true,
+        hasErrors: false,
+        message: 'Post created',
+      });
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error creating post');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error creating post',
+      });
     }
   },
 
@@ -51,10 +60,14 @@ module.exports = {
       const getAllPostsResult = await sails.sendNativeQuery(getAllPostsQuery, [
         userId,
       ]);
-      res.status(200).send(getAllPostsResult.rows);
+      res.status(200).json(getAllPostsResult.rows);
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error getting posts');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error getting posts',
+      });
     }
   },
 
@@ -88,10 +101,18 @@ module.exports = {
         userId,
       ]);
       console.log(updatePostResult);
-      res.status(201).send('Post updated');
+      res.status(201).json({
+        success: true,
+        hasErrors: false,
+        message: 'Post updated',
+      });
     } catch (error) {
       console.log(error.message);
-      res.status(500).send('Error updating post');
+      res.status(500).json({
+        success: false,
+        hasErrors: true,
+        message: 'Error updating post',
+      });
     }
   },
 
